@@ -7,6 +7,9 @@ import HtmlWorker from 'monaco-editor/esm/vs/language/html/html.worker?worker'
 import CssWorker from 'monaco-editor/esm/vs/language/css/css.worker?worker'
 import JsWorker from 'monaco-editor/esm/vs/language/typescript/ts.worker?worker'
 
+const { pathname } = window.location
+const [rawHtml, rawCss, rawJs] = pathname.slice(1).split('%7C')
+
 const $js = r("#js");
 const $html = r("#html");
 const $css = r("#css");
@@ -24,12 +27,10 @@ window.MonacoEnvironment = {
     if (label === "css") return new CssWorker()
   }
 }
-  const { pathname } = window.location
-  const [rawHtml, rawCss, rawJs] = pathname.slice(1).split('%7C')
 
-  const html = decode(rawHtml)
-  const css = decode(rawCss)
-  const js = decode(rawJs)
+  const html = rawHtml ? decode(rawHtml) : ''
+  const css = rawCss ? decode(rawCss) : ''
+  const js = rawJs ? decode(rawJs) : ''
 
   const htmlEditor = monaco.editor.create($html, {
     value: html,
